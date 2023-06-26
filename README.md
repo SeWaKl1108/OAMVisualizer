@@ -1,5 +1,7 @@
 # PlotLabjack
-Here you can find the software to the [opticalAbsorptionMeasurement](https://github.com/Johann-Schmid/opticalAbsorptionMeasurement) project
+Here you can find the software to the opticalAbsorptionMeasurement project
+<br/>
+The hardware files are located under [opticalAbsorptionMeasurement](https://github.com/Johann-Schmid/opticalAbsorptionMeasurement)
 <br/>
 <br/>
 **The software is located under the plotLabjack/plotLabjack/bin/Release/ directory**
