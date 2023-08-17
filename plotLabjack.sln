@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plotLabjack", "plotLabjack\plotLabjack.csproj", "{93DFF17E-C414-4926-9FA0-631A2ADB2F9D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupPlotLabjack", "SetupPlotLabjack\SetupPlotLabjack.vdproj", "{A3A7BC8C-EC28-49A7-8ACA-F3C4633256D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{93DFF17E-C414-4926-9FA0-631A2ADB2F9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93DFF17E-C414-4926-9FA0-631A2ADB2F9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93DFF17E-C414-4926-9FA0-631A2ADB2F9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A7BC8C-EC28-49A7-8ACA-F3C4633256D8}.Debug|Any CPU.ActiveCfg = Debug
+		{A3A7BC8C-EC28-49A7-8ACA-F3C4633256D8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
