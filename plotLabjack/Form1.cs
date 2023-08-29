@@ -16,9 +16,10 @@ using System.Diagnostics;
 using ScottPlot.Plottable;
 using LabJack.LabJackUD;
 using System.Globalization;
-using System.IO;
-using System.Runtime.InteropServices;
-
+using System.Configuration;
+using ScottPlot.Control;
+using System.IO.Ports;
+using Microsoft.VisualBasic.Devices;
 
 namespace plotLabjack
 {
@@ -26,6 +27,9 @@ namespace plotLabjack
 
     public partial class Form1 : Form
     {
+        int constaTimer = 200;
+        int constbTimer = 5000;
+
         bool isMouseHovering = false;
 
         Timers.Timer aTimer = null;
@@ -57,7 +61,60 @@ namespace plotLabjack
         public IPlottable Plottable;
         public Form1()
         {
+            int timerValue;
+            string timerValueString;
+
             InitializeComponent();
+
+            Dictionary<string, string> timerValues = new Dictionary<string, string>();
+            //add a timer to, "aTimer" the dictornary
+            timerValues.Add("aTimer", "constaValue");
+            timerValues.Add("bTimer", "constbValue");
+
+
+            InitializeComponent();
+
+            foreach (KeyValuePair<string, string> dictionary in timerValues)
+            {
+                timerValues.TryGetValue(dictionary.Key, out string result);
+                switch (result)
+                {
+                    case "constaValue":
+                        timerValueString = ConfigurationManager.AppSettings[dictionary.Key];
+                        if (int.TryParse(timerValueString, out timerValue))
+                        {
+                            constaTimer = timerValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Something is wrong with App.Config, set init value");
+                            constaTimer = 200;
+                        }
+                        Debug.Write(constaTimer + " " + constbTimer);
+                        break;
+                    case "constbValue":
+                        timerValueString = ConfigurationManager.AppSettings[dictionary.Key];
+                        if (int.TryParse(timerValueString, out timerValue))
+                        {
+                            constbTimer = timerValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Something is wrong with App.Config, set init value");
+                            constbTimer = 5000;
+                        }
+                        Debug.Write(constaTimer + " " + constbTimer);
+                        break;
+                    default:
+                        MessageBox.Show("Something is wrong with App.Config, set init value");
+                        constaTimer = 200;
+                        constbTimer = 5000;
+                        break;
+                }
+
+            }
+
+
 
             int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
@@ -68,6 +125,15 @@ namespace plotLabjack
 
                 this.Width = (int)(this.Width * scalePercentage);
                 this.Height = (int)(this.Height * scalePercentage);
+
+                for (int i = 1; i <= 12; i++)
+                {
+                    Control control = FindControlByName(this, "label" + i);
+                    if (control is Label label)
+                    {
+                        label.Font = new Font(label.Font.FontFamily, 15);
+                    }
+                }
 
             }
 
@@ -151,6 +217,24 @@ namespace plotLabjack
             return titleAttribute?.Title ?? string.Empty;
         }
 
+        public Control FindControlByName(Control parent, string name)
+        {
+            // If the control name matches, return the control
+            if (parent.Name == name)
+                return parent;
+
+            // Search within the child controls
+            foreach (Control child in parent.Controls)
+            {
+                Control result = FindControlByName(child, name);
+                if (result != null)
+                    return result;
+            }
+
+            // If no control found, return null
+            return null;
+        }
+
 
         private void defaultSignalPlot()
         {
@@ -179,7 +263,7 @@ namespace plotLabjack
             //customMenu.Items.Add(new ToolStripMenuItem("Clear Plot", null, new EventHandler(clearPlot)));
             customMenu.Show(Form1.MousePosition.X, Form1.MousePosition.Y);
         }
-        
+
         private void toggleChannel1(object sender, EventArgs e)
         {
 
@@ -197,7 +281,7 @@ namespace plotLabjack
             //formsPlot1.Plot.Clear();
             //formsPlot1.Plot.AxisAuto();
             formsPlot1.Render();
-            
+
         }
 
 
@@ -278,7 +362,7 @@ namespace plotLabjack
             aTimer.SynchronizingObject = this;
             aTimer.Enabled = false;
 
-            bTimer = new Timers.Timer(5000);
+            bTimer = new Timers.Timer(constbTimer);
             bTimer.Elapsed += this.OnRender;
             bTimer.AutoReset = true;
             bTimer.SynchronizingObject = this;
@@ -317,7 +401,7 @@ namespace plotLabjack
 
         private void OnRender(Object source, Timers.ElapsedEventArgs e)
         {
-            
+
 #if DEBUG
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -429,7 +513,7 @@ namespace plotLabjack
                 MessageBox.Show("The comparison will be disabled");
                 aTimer.Stop();
             }
-            
+
         }
 
         private void stopExperiment_Click(object sender, EventArgs e)
@@ -471,12 +555,13 @@ namespace plotLabjack
 
         private void controlTab_Selected(object sender, TabControlEventArgs e)
         {
-            
-            if (e.TabPage == tabPage3)
+
+            if (e.TabPage == tabPage4)
             {
-                Debug.Write("controlTab");
-                tabPage3.Invalidate(true);
-                tabPage3.Refresh();
+                // Center pictureBox3 within its parent TabPage
+                int centerX = (pictureBox3.Parent.Width - pictureBox3.Width) / 2;
+                int centerY = (pictureBox3.Parent.Height - pictureBox3.Height) / 2;
+                pictureBox3.Location = new Point(centerX, centerY);
             }
         }
 
@@ -544,6 +629,5 @@ namespace plotLabjack
         {
             System.Diagnostics.Process.Start("http://www.schmid-johann.de");
         }
-        
     }
 }
