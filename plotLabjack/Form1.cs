@@ -1,5 +1,5 @@
 ﻿// #define INITVALUE
-// #define test
+// #define TEST
 
 using ScottPlot;
 using System;
@@ -19,7 +19,6 @@ using System.Globalization;
 using System.Configuration;
 using ScottPlot.Control;
 using System.IO.Ports;
-using Microsoft.VisualBasic.Devices;
 
 namespace plotLabjack
 {
@@ -44,8 +43,6 @@ namespace plotLabjack
 
         int NextPointIndex = 0;
 
-        Random rand = new Random(0);
-
         SignalPlot SignalPlot1 = null;
         SignalPlot SignalPlot2 = null;
         SignalPlot SignalPlot3 = null;
@@ -58,7 +55,6 @@ namespace plotLabjack
 
         //write a function that generates 10 in numbers
 
-        public IPlottable Plottable;
         public Form1()
         {
             int timerValue;
@@ -66,13 +62,13 @@ namespace plotLabjack
 
             InitializeComponent();
 
-            Dictionary<string, string> timerValues = new Dictionary<string, string>();
-            //add a timer to, "aTimer" the dictornary
-            timerValues.Add("aTimer", "constaValue");
-            timerValues.Add("bTimer", "constbValue");
+            Dictionary<string, string> timerValues = new Dictionary<string, string>
+            {
+                //add a timer to, "aTimer" the dictornary
+                { "aTimer", "constaValue" },
+                { "bTimer", "constbValue" }
+            };
 
-
-            InitializeComponent();
 
             foreach (KeyValuePair<string, string> dictionary in timerValues)
             {
@@ -113,7 +109,7 @@ namespace plotLabjack
                 }
 
             }
-
+ 
 
 
             int screenHeight = Screen.PrimaryScreen.Bounds.Height;
@@ -137,14 +133,10 @@ namespace plotLabjack
 
             }
 
-#if test
-#else
+#if !TEST
             try
             {
                 myLabJack = new labJack();
-#if test
-            label6.Text = "Debug Mode";
-#else
                 label6.Text = myLabJack.getDriverVersion();
                 label11.Text = myLabJack.getHardwareVersion();
 
@@ -163,8 +155,9 @@ namespace plotLabjack
                 label11.Text = "Labjack not found";
                 label8.Text = "Labjack not found";
             }
+#else
+            label6.Text = "Debug";
 #endif
-            //awsStream = new aws();
 
             DateTimeOffset dto = new DateTimeOffset(DateTime.UtcNow);
             write = new fileWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal), dto.ToString("yyyyMMdd_HHmmss"));
@@ -181,26 +174,16 @@ namespace plotLabjack
 
             defaultSignalPlot();
 
-            formsPlot1.RightClicked -= formsPlot1.DefaultRightClickEvent;
-            formsPlot1.RightClicked += new EventHandler((sender, e) => CustomRightClickEvent(sender, e));
+            System.Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            label10.Text = version.ToString();
 
             pictureBox1.Paint += pictureBox1_Paint;
 
-            formsPlot1.Configuration.RightClickDragZoom = false;
-            formsPlot1.Configuration.ScrollWheelZoom = false;
-
-            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            label10.Text = version.ToString();
-
             this.Text = GetAssemblyTitle();
-
-#endif
 
             // Experiment enabled
             startExperiment.Enabled = false;
             stopExperiment.Enabled = false;
-
-            //awsStream.Connect("labjackDevice");
 
         }
 
@@ -248,6 +231,13 @@ namespace plotLabjack
 #else
             formsPlot1.Plot.SetAxisLimits(0, 100, 0, 1);
 #endif
+            formsPlot1.RightClicked -= formsPlot1.DefaultRightClickEvent;
+            formsPlot1.RightClicked += new EventHandler((sender, e) => CustomRightClickEvent(sender, e));
+
+
+            formsPlot1.Configuration.ScrollWheelZoom = false;
+            formsPlot1.Configuration.RightClickDragZoom = false;
+            formsPlot1.Configuration.LeftClickDragPan = false;
 
             formsPlot1.Render();
         }
@@ -371,12 +361,11 @@ namespace plotLabjack
 
 
         private void OnTimedEvent(Object source, Timers.ElapsedEventArgs e)
-        {
-            IList<double> data = new List<double>();
+        { 
 
             try
             {
-                data = myLabJack.readValue();
+                IList<double> data = myLabJack.readValue();
                 label1.Text = data.ElementAt(0).ToString("0.000", CultureInfo.InvariantCulture);
                 label2.Text = data.ElementAt(1).ToString("0.000", CultureInfo.InvariantCulture);
                 label3.Text = data.ElementAt(2).ToString("0.000", CultureInfo.InvariantCulture);
