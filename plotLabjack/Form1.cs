@@ -139,8 +139,6 @@ namespace plotLabjack
                 myLabJack = new labJack();
                 label6.Text = myLabJack.getDriverVersion();
                 label11.Text = myLabJack.getHardwareVersion();
-
-                // Get the firmware version.
                 label8.Text = myLabJack.getFirmwareVersion();
             }
             catch (LabJackUDException exc)
@@ -222,10 +220,10 @@ namespace plotLabjack
         private void defaultSignalPlot()
         {
             formsPlot1.Plot.Title("4-Channel-Plot");
-            SignalPlot1 = formsPlot1.Plot.AddSignal(adVal.AdValues1);
-            SignalPlot2 = formsPlot1.Plot.AddSignal(adVal.AdValues2);
-            SignalPlot3 = formsPlot1.Plot.AddSignal(adVal.AdValues3);
-            SignalPlot4 = formsPlot1.Plot.AddSignal(adVal.AdValues4);
+            SignalPlot1 = formsPlot1.Plot.AddSignal(adVal.AdValues1, label:"ch1");
+            SignalPlot2 = formsPlot1.Plot.AddSignal(adVal.AdValues2, label: "ch2");
+            SignalPlot3 = formsPlot1.Plot.AddSignal(adVal.AdValues3, label: "ch3");
+            SignalPlot4 = formsPlot1.Plot.AddSignal(adVal.AdValues4, label: "ch4");
 #if INITVALUE
             formsPlot1.Plot.SetAxisLimits(0, 100, 0, 10);
 #else
@@ -239,6 +237,7 @@ namespace plotLabjack
             formsPlot1.Configuration.RightClickDragZoom = false;
             formsPlot1.Configuration.LeftClickDragPan = false;
 
+            formsPlot1.Plot.Legend();
             formsPlot1.Render();
         }
 
@@ -373,17 +372,17 @@ namespace plotLabjack
             }
             catch (LabJackUDException exc)
             {
-                MessageBox.Show(exc.Message);
-                this.Text = "Restart App, can't read values, Timer stopped";
                 aTimer.Enabled = false;
                 bTimer.Enabled = false;
+                MessageBox.Show(exc.Message);
+                this.Text = "Restart App, can't read values, Timer stopped";
             }
             catch (ArgumentOutOfRangeException)
             {
-                MessageBox.Show("Data index is out of range.");
-                this.Text = "Data issue, Timer stopped";
                 aTimer.Enabled = false;
                 bTimer.Enabled = false;
+                MessageBox.Show("Data index is out of range.");
+                this.Text = "Data issue, Timer stopped";
             }
         }
 
