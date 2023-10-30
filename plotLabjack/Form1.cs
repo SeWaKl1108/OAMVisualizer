@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Configuration;
 using ScottPlot.Control;
 using System.IO.Ports;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace plotLabjack
 {
@@ -182,6 +183,11 @@ namespace plotLabjack
             // Experiment enabled
             startExperiment.Enabled = false;
             stopExperiment.Enabled = false;
+
+            toolTip1.SetToolTip(label1, "Channel1");
+            toolTip2.SetToolTip(label2, "Channel2");
+            toolTip3.SetToolTip(label3, "Channel3");
+            toolTip4.SetToolTip(label4, "Channel4");
 
         }
 
