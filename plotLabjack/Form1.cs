@@ -20,6 +20,7 @@ using System.Configuration;
 using ScottPlot.Control;
 using System.IO.Ports;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
 
 namespace plotLabjack
 {
@@ -28,7 +29,7 @@ namespace plotLabjack
     public partial class Form1 : Form
     {
         int constaTimer = 200;
-        int constbTimer = 5000;
+        int constbTimer = 60000;
 
         bool isMouseHovering = false;
 
@@ -77,7 +78,7 @@ namespace plotLabjack
                 switch (result)
                 {
                     case "constaValue":
-                        timerValueString = ConfigurationManager.AppSettings[dictionary.Key];
+                        timerValueString = System.Configuration.ConfigurationManager.AppSettings[dictionary.Key];
                         if (int.TryParse(timerValueString, out timerValue))
                         {
                             constaTimer = timerValue;
@@ -90,7 +91,7 @@ namespace plotLabjack
                         Debug.Write(constaTimer + " " + constbTimer);
                         break;
                     case "constbValue":
-                        timerValueString = ConfigurationManager.AppSettings[dictionary.Key];
+                        timerValueString = System.Configuration.ConfigurationManager.AppSettings[dictionary.Key];
                         if (int.TryParse(timerValueString, out timerValue))
                         {
                             constbTimer = timerValue;
@@ -98,22 +99,20 @@ namespace plotLabjack
                         else
                         {
                             MessageBox.Show("Something is wrong with App.Config, set init value");
-                            constbTimer = 5000;
+                            constbTimer = 60000;
                         }
                         Debug.Write(constaTimer + " " + constbTimer);
                         break;
                     default:
                         MessageBox.Show("Something is wrong with App.Config, set init value");
                         constaTimer = 200;
-                        constbTimer = 5000;
+                        constbTimer = 60000;
                         break;
                 }
 
             }
- 
 
-
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
             if (screenHeight < 1080)
             {
@@ -170,7 +169,7 @@ namespace plotLabjack
 #else
             adVal = new Values();
 #endif
-
+            
             defaultSignalPlot();
 
             System.Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -351,7 +350,7 @@ namespace plotLabjack
 
         private void SetTimer()
         {
-            aTimer = new Timers.Timer(100);
+            aTimer = new Timers.Timer(constaTimer);
             aTimer.Elapsed += this.OnTimedEvent;
             aTimer.AutoReset = true;
             aTimer.SynchronizingObject = this;
