@@ -1,5 +1,5 @@
-﻿// #define INITVALUE
-// #define TEST
+﻿ #define INITVALUE
+ #define TEST
 
 using ScottPlot;
 using System;
@@ -29,7 +29,7 @@ namespace plotLabjack
     public partial class Form1 : Form
     {
         int constaTimer = 200;
-        int constbTimer = 60000;
+        int constbTimer = 5000;
 
         bool isMouseHovering = false;
 
@@ -99,18 +99,29 @@ namespace plotLabjack
                         else
                         {
                             MessageBox.Show("Something is wrong with App.Config, set init value");
-                            constbTimer = 60000;
+                            constbTimer = 5000;
                         }
                         Debug.Write(constaTimer + " " + constbTimer);
                         break;
                     default:
                         MessageBox.Show("Something is wrong with App.Config, set init value");
                         constaTimer = 200;
-                        constbTimer = 60000;
+                        constbTimer = 5000;
                         break;
                 }
 
             }
+
+            var hLine = formsPlot1.Plot.AddVerticalLine(1);
+            hLine.DragEnabled = true;
+            hLine.PositionLabel = true;
+            hLine.PositionLabelBackground = hLine.Color;
+            hLine.LineWidth = 2;
+
+            formsPlot1.MouseDown += new MouseEventHandler((sender, e) => { 
+                hLine.X = formsPlot1.Plot.GetCoordinateX(e.X);
+                Debug.WriteLine(formsPlot1.Plot.GetCoordinateX(e.X));
+            });
 
         int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
@@ -242,7 +253,7 @@ namespace plotLabjack
             formsPlot1.Configuration.RightClickDragZoom = false;
             formsPlot1.Configuration.LeftClickDragPan = false;
 
-            formsPlot1.Plot.Legend();
+            formsPlot1.Plot.Legend(location: Alignment.UpperLeft);
             formsPlot1.Render();
         }
 
@@ -622,5 +633,7 @@ namespace plotLabjack
         {
             System.Diagnostics.Process.Start("http://www.schmid-johann.de");
         }
+
+
     }
 }

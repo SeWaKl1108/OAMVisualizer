@@ -197,7 +197,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="appsettings.json" />
     <None Include="labJack.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
