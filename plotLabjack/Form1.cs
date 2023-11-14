@@ -1,5 +1,5 @@
-﻿ #define INITVALUE
- #define TEST
+﻿ //#define INITVALUE
+// #define TEST
 
 using ScottPlot;
 using System;
