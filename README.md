@@ -10,5 +10,8 @@ The hardware files are located under [opticalAbsorptionMeasurement](https://gith
 <div align='center'>
 <a href='https://schmid-johann.de'><img src='https://repository-images.githubusercontent.com/561782959/b9ded760-e10b-46cd-b8d0-daba017e4eea' width='500px'></a>
 <br>
-<img src='software.png' width='500px'>
+<br>
+<strong>Preview of the software</strong>
+<br>
+  <img src='software.png' width='500px'>
 </div>
