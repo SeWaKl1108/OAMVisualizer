@@ -236,6 +236,7 @@ namespace plotLabjack
         private void defaultSignalPlot()
         {
             formsPlot1.Plot.Title("4-Channel-Plot");
+            formsPlot1.Plot.BottomAxis.Label("Time [h]");
             SignalPlot1 = formsPlot1.Plot.AddSignal(adVal.AdValues1, label:"ch1");
             SignalPlot2 = formsPlot1.Plot.AddSignal(adVal.AdValues2, label: "ch2");
             SignalPlot3 = formsPlot1.Plot.AddSignal(adVal.AdValues3, label: "ch3");
@@ -252,7 +253,7 @@ namespace plotLabjack
             formsPlot1.Configuration.ScrollWheelZoom = false;
             formsPlot1.Configuration.RightClickDragZoom = false;
             formsPlot1.Configuration.LeftClickDragPan = false;
-
+          
             formsPlot1.Plot.Legend(location: Alignment.UpperLeft);
             formsPlot1.Render();
         }
@@ -634,6 +635,9 @@ namespace plotLabjack
             System.Diagnostics.Process.Start("http://www.schmid-johann.de");
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
