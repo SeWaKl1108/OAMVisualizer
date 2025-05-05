@@ -1,5 +1,5 @@
 ﻿ //#define INITVALUE
-// #define TEST
+#define TEST
 
 using ScottPlot;
 using System;
@@ -78,6 +78,7 @@ namespace plotLabjack
                 switch (result)
                 {
                     case "constaValue":
+                        
                         timerValueString = System.Configuration.ConfigurationManager.AppSettings[dictionary.Key];
                         if (int.TryParse(timerValueString, out timerValue))
                         {
@@ -346,20 +347,7 @@ namespace plotLabjack
             formsPlot1.Render();
         }
 
-        //private void clearChannel(object sender, EventArgs e)
-        //{
-        //    formsPlot1.Plot.Clear();
-        //    formsPlot1.Plot.AxisAuto();
-        //    formsPlot1.Render();
-        //}
-
-        //private void clearPlot(object sender, EventArgs e)
-        //{
-        //    formsPlot1.Plot.Clear();
-        //    formsPlot1.Plot.AxisAuto();
-        //    formsPlot1.Render();
-        //}
-
+        
         private void SetTimer()
         {
             aTimer = new Timers.Timer(constaTimer);

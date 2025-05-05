@@ -49,12 +49,10 @@ namespace plotLabjack
                 // Handle other exceptions.
                 MessageBox.Show($"Unexpected Error: {ex.Message}");
             }
-
         }
 
         public void updateFolder(string fileDialog)
         {
-
             this.filePath = Path.GetDirectoryName(fileDialog);
             this.fileName = Path.GetFileName(fileDialog);
         }
